@@ -1,6 +1,8 @@
 import { fetchFilteredInvoices } from "@/app/lib/data";
 import { formatCurrency, formatDateToLocal } from "@/app/lib/utils";
 import Image from "next/image";
+import InvoiceStatus from "./status";
+import { DeleteInvoice, UpdateInvoice } from "./buttons";
 
 export default async function InvoiceTable({
   query,
@@ -35,7 +37,7 @@ export default async function InvoiceTable({
                     </div>
                     <p className="text-sm text-gray-500">{invoice.email}</p>
                   </div>
-                  {/* <InvoiceStatus status={invoice.status} /> */}
+                  <InvoiceStatus status={invoice.status} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
@@ -44,10 +46,10 @@ export default async function InvoiceTable({
                     </p>
                     <p>{formatDateToLocal(invoice.date)}</p>
                   </div>
-                  {/* <div className="flex justify-end gap-2">
+                  <div className="flex justify-end gap-2">
                     <UpdateInvoice id={invoice.id} />
                     <DeleteInvoice id={invoice.id} />
-                  </div> */}
+                  </div>
                 </div>
               </div>
             ))}
@@ -103,15 +105,15 @@ export default async function InvoiceTable({
                   <td className="whitespace-nowrap px-3 py-3">
                     {formatDateToLocal(invoice.date)}
                   </td>
-                  {/* <td className="whitespace-nowrap px-3 py-3">
+                  <td className="whitespace-nowrap px-3 py-3">
                     <InvoiceStatus status={invoice.status} />
-                  </td> */}
-                  {/* <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                  </td>
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
                       <UpdateInvoice id={invoice.id} />
                       <DeleteInvoice id={invoice.id} />
                     </div>
-                  </td> */}
+                  </td>
                 </tr>
               ))}
             </tbody>

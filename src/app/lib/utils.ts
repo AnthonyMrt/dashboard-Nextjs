@@ -26,3 +26,27 @@ export const generateYAxis = (revenue: Revenue[]) => {
   const topLabel = Math.ceil(highestRecord / 1000) * 1000;
   return topLabel;
 };
+
+export const generatePagination = (currentpage: number, totalPages: number) => {
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  if (currentpage <= 3) {
+    return [1, 2, 3, "...", totalPages - 1, totalPages];
+  }
+
+  if (currentpage >= totalPages - 2) {
+    return [3, 4, 5, "...", totalPages - 2, totalPages - 1, totalPages];
+  }
+
+  return [
+    1,
+    "...",
+    currentpage - 1,
+    currentpage,
+    currentpage + 1,
+    "...",
+    totalPages,
+  ];
+};
