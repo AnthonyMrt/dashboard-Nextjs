@@ -3,6 +3,8 @@ import { z } from "zod";
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { signIn } from "../../../auth";
+import { AuthError } from "next-auth";
 
 export type State = {
   errors?: {
@@ -15,7 +17,9 @@ export type State = {
 
 const formSchema = z.object({
   id: z.string(),
-  customerId: z.string(),
+  customerId: z.string({
+    message: "Veuillez sélectionner un client pour la facture",
+  }),
   amount: z.coerce
     .number()
     .gt(0, { message: "Veuillez entre un montant supérieur à $0." }),
@@ -122,5 +126,24 @@ export async function deleteInvoice(id: string) {
         "Erreur base de données: échec lors de la suppression de la facture." +
         error,
     };
+  }
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData
+) {
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return "Identifiants invalides.";
+        default:
+          return "Quelque chose s'est mal passé.";
+      }
+    }
+    throw error;
   }
 }

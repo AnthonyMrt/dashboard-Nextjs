@@ -1,11 +1,25 @@
-import { AtSymbolIcon, KeyIcon } from "@heroicons/react/24/outline";
+"use client";
+import {
+  AtSymbolIcon,
+  ExclamationCircleIcon,
+  KeyIcon,
+} from "@heroicons/react/24/outline";
 import { ArrowRightIcon } from "@heroicons/react/20/solid";
 import { lusitana } from "./font";
 import Button from "./button";
+import { useActionState } from "react";
+import { authenticate } from "../lib/actions";
+import { useFormStatus } from "react-dom";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginForm() {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
+
+  const [errorMessage, dispatch] = useActionState(authenticate, undefined);
+
   return (
-    <form className="space-y-3">
+    <form className="space-y-3" action={dispatch}>
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
         <h1 className={`${lusitana.className} mb-3 text-2xl`}>Connexion</h1>
         <div className="w-full">
@@ -49,15 +63,29 @@ export default function LoginForm() {
             </div>
           </div>
         </div>
+        <input type="hidden" name="redirectTo" value={callbackUrl} />
         <LoginButton />
+        <div
+          className="flex h-8 items-end space-x-1"
+          aria-live="polite"
+          aria-atomic="true"
+        >
+          {errorMessage && (
+            <>
+              <ExclamationCircleIcon className="h-5 w-5 text-red" />
+              <p className="text-sm text-red-500">{errorMessage}</p>
+            </>
+          )}
+        </div>
       </div>
     </form>
   );
 }
 
 function LoginButton() {
+  const { pending } = useFormStatus();
   return (
-    <Button className="mt-4 w-full">
+    <Button className="mt-4 w-full" aria-disabled={pending}>
       Se connecter
       <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
     </Button>

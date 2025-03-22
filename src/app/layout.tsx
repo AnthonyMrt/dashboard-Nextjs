@@ -4,7 +4,7 @@ import { inter } from "./ui/font";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Excercice app Next.js Dashboard app router",
+  description: "Excercice app Next.js Dashboard avec appRouter",
 };
 
 export default function RootLayout({

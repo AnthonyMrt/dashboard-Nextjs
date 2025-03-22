@@ -9,14 +9,14 @@ import Link from "next/link";
 import Button from "../button";
 import { CustomerField } from "@/app/lib/definitions";
 import { createInvoices, State } from "@/app/lib/actions";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
 export default function Form({ customers }: { customers: CustomerField[] }) {
   const initialState: State = {
     message: null,
     errors: {},
   };
-  const [state, dispatch] = useFormState(createInvoices, initialState);
+  const [state, dispatch] = useActionState(createInvoices, initialState);
 
   return (
     <form action={dispatch}>
