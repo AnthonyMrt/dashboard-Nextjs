@@ -16,8 +16,12 @@ export type State = {
 const formSchema = z.object({
   id: z.string(),
   customerId: z.string(),
-  amount: z.coerce.number(),
-  status: z.enum(["pending", "paid"]),
+  amount: z.coerce
+    .number()
+    .gt(0, { message: "Veuillez entre un montant supérieur à $0." }),
+  status: z.enum(["pending", "paid"], {
+    invalid_type_error: "Veuillez sélectionner le status de la facture",
+  }),
   date: z.string(),
 });
 

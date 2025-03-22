@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import Button from "../button";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 
 export default function Form({
   customers,
@@ -23,7 +23,7 @@ export default function Form({
     errors: {},
   };
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
-  const [state, dispatch] = useFormState(updateInvoiceWithId, initialState);
+  const [state, dispatch] = useActionState(updateInvoiceWithId, initialState);
 
   return (
     <form action={dispatch}>
